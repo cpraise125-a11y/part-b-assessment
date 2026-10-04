@@ -49,3 +49,36 @@ const frozen = deepFreeze({a: 1, b: { c: 2 }});
 frozen.b.c = 99;
 console.log(frozen.b.c);
 console.log(Object.isFrozen(frozen.b));
+
+
+            // Problem 4: Private counter Factory
+function createCounter() {
+    let count = 0;
+    return {
+        increment() { count++; },
+        decrement() { count--;},
+        get value() { return count; } 
+    };
+}
+const counter = createCounter();
+counter.increment();
+counter.increment();
+counter.decrement();
+console.log(counter.value);
+console.log(counter.count);
+
+         // Problem 5: Schema Validator
+function validateSchema(obj, schema) {
+const errors = [];
+for (const [key, type] of Object.entries(schema)) {
+    if (!Object.hasOwn(obj, key)) {
+        errors.push( `${key}: missing property` );
+    } else if (typeof obj[key] !== type) {
+        errors.push(`${key}: expected ${type}, got ${typeof obj[key]}`);
+     }
+    }
+    return errors;
+}
+const  schema = { name: "string",age: "number", isAdmin: "boolean"};
+console.log(validateSchema({ name: "Ada", age: 21, isAdmin: false}, schema));
+console.log(validateSchema({ name: "Ada", age: "21"}, schema));
